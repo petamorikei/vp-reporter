@@ -23,9 +23,9 @@ vpコマンド（VOICEPEAK）を使用して、作業の進捗状況や結果を
 /plugin add <path-to-vp-reporter>
 ```
 
-2. または、`~/.claude/skills/`ディレクトリにコピー：
+2. または、`~/.claude/skills/`ディレクトリにコピー（プロジェクトルートから実行）：
 ```bash
-cp -r vp-reporter ~/.claude/skills/
+cp -r . ~/.claude/skills/vp-reporter/
 ```
 
 ### 前提条件
