@@ -27,7 +27,7 @@ vpコマンド（VOICEPEAK）を使用して、作業の進捗状況や結果を
 
 2. または、`~/.claude/skills/`ディレクトリにコピー（プロジェクトルートから実行）：
 ```bash
-cp -r . ~/.claude/skills/vp-reporter/
+rsync -av --exclude='.git' --exclude='.DS_Store' . ~/.claude/skills/vp-reporter/
 ```
 
 ### 前提条件
