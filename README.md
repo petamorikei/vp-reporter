@@ -1,17 +1,17 @@
 # VP Reporter スキル
 
-vpコマンド（VOICEPEAK）を使用して、作業の進捗状況や結果を音声で報告するClaudeスキルです。
+vpsayコマンド（VOICEPEAK）を使用して、作業の進捗状況や結果を音声で報告するClaudeスキルです。
 
 ## インストール
 
 ### 前提条件
 
 - [VOICEPEAK](https://www.ah-soft.com/voice/6nare/)がインストールされていること
-- [vp CLI](https://github.com/petamorikei/voicepeak-cli)がインストールされていること
+- [vpsay CLI](https://github.com/petamorikei/voicepeak-cli)がインストールされていること
 
-vpコマンドのインストール確認：
+vpsayコマンドのインストール確認：
 ```bash
-vp -h
+vpsay -h
 ```
 
 ### Claude Codeへの追加
@@ -28,13 +28,13 @@ rsync -av --exclude='.git' --exclude='.DS_Store' . ~/.claude/skills/vp-reporter/
 
 ## 使い方
 
-スキルをインストールすると、Claudeが作業中に自動的にvpコマンドで音声報告を行います。
+スキルをインストールすると、Claudeが作業中に自動的にvpsayコマンドで音声報告を行います。
 
 ```bash
 # 使用例
-vp "ビルドを開始するわよ"
-vp "テストが完了したわよ"
-vp "エラーが発生したわよ。モジュールの依存関係に問題があるみたいね"
+vpsay "ビルドを開始するわよ"
+vpsay "テストが完了したわよ"
+vpsay "エラーが発生したわよ。モジュールの依存関係に問題があるみたいね"
 ```
 
 報告のガイドラインや口調のルールなど、スキルの詳細な動作仕様は [SKILL.md](SKILL.md) を参照してください。
@@ -55,10 +55,10 @@ vp-reporter/
 
 ## トラブルシューティング
 
-### vpコマンドが見つからない
+### vpsayコマンドが見つからない
 
 ```bash
-which vp
+which vpsay
 ```
 
 インストールされていない場合は、[voicepeak-cli](https://github.com/petamorikei/voicepeak-cli)をインストールしてください。
@@ -75,4 +75,4 @@ which vp
 ## 関連リンク
 
 - [VOICEPEAK](https://www.ah-soft.com/voice/6nare/)
-- [voicepeak-cli (vp command)](https://github.com/petamorikei/voicepeak-cli)
+- [voicepeak-cli (vpsay command)](https://github.com/petamorikei/voicepeak-cli)
