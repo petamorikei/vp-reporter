@@ -1,17 +1,26 @@
 # VP Reporter スキル
 
 vpsayコマンド（VOICEPEAK）を使用して、作業の進捗状況や結果を音声で報告するClaudeスキルです。
+読み上げナレーターに合わせた口調で報告します。
 
 ## インストール
 
 ### 前提条件
 
-- [VOICEPEAK](https://www.ah-soft.com/voice/6nare/)がインストールされていること
+- [VOICEPEAK](https://www.ah-soft.com/voice/)と、使いたいナレーターがインストールされていること
 - [vpsay CLI](https://github.com/petamorikei/voicepeak-cli)がインストールされていること
+- vpsay の設定ファイル `~/.config/vpsay/config.toml` で `default_preset` が設定されていること
 
-vpsayコマンドのインストール確認：
+```toml
+default_preset = "karin-custom"
+
+[[presets]]
+name = "karin-custom"
+narrator = "Natsuki Karin"   # vpsay --list-narrator に表示される名前
+```
+
 ```bash
-vpsay -h
+vpsay --list-presets   # (default) の付いたプリセットのナレーターで読み上げます
 ```
 
 ### Claude Codeへの追加
@@ -23,7 +32,7 @@ vpsay -h
 
 または、`~/.claude/skills/`ディレクトリにコピー：
 ```bash
-rsync -av --exclude='.git' --exclude='.DS_Store' . ~/.claude/skills/vp-reporter/
+rsync -av --delete --exclude='.git' --exclude='.DS_Store' . ~/.claude/skills/vp-reporter/
 ```
 
 ## 使い方
@@ -31,26 +40,39 @@ rsync -av --exclude='.git' --exclude='.DS_Store' . ~/.claude/skills/vp-reporter/
 スキルをインストールすると、Claudeが作業中に自動的にvpsayコマンドで音声報告を行います。
 
 ```bash
-# 使用例
-vpsay "ビルドを開始するわよ"
-vpsay "テストが完了したわよ"
-vpsay "エラーが発生したわよ。モジュールの依存関係に問題があるみたいね"
+# 使用例（夏色花梨の場合）
+vpsay --bg "ビルドを開始するわよ"
+vpsay --bg "テストが完了したわよ"
 ```
 
-報告のガイドラインや口調のルールなど、スキルの詳細な動作仕様は [SKILL.md](SKILL.md) を参照してください。
+- ナレーターを変えるときは、vpsay の `default_preset` を変更します。スキルは読み込み時に vpsay の設定からナレーターを調べ、そのナレーターの口調ファイルを使います。
+- 報告のガイドラインなど、スキルの詳細な動作仕様は [SKILL.md](SKILL.md) を参照してください。
+
+## ナレーターと口調
+
+`characters/` に口調ファイルがあるナレーター：
+
+- 夏色花梨（`Natsuki Karin`）
+
+それ以外のナレーター（6ナレーターセットなど）は汎用の丁寧な口調（`characters/_generic.md`）で報告します。
+
+### ナレーターを追加する
+
+`characters/<vpsay --list-narrator に表示される名前>.md` を作成します（例: `characters/Natsuki Karin.md`）。
+VOICEPEAK のナレーター名は英語表記です。日本語名ではなく、`--list-narrator` の表示どおりのファイル名にしてください。
+既存のファイルと同じく、設定・報告での口調・例を書いてください。
 
 ## ファイル構成
 
 ```
 vp-reporter/
-├── SKILL.md              # スキル定義ファイル（動作仕様・ガイドライン）
-├── README.md             # このファイル（インストール・使い方）
-├── LICENSE               # MITライセンス
-└── examples/             # 報告文例集
-    ├── task_start.md     # タスク開始時の報告例
-    ├── progress.md       # 進捗報告例
-    ├── completion.md     # 完了報告例
-    └── error.md          # エラー報告例
+├── SKILL.md                  # スキル定義（読み込み時に現在のナレーターの口調を埋め込む）
+├── README.md                 # このファイル
+├── LICENSE                   # MITライセンス
+├── scripts/voice-profile.sh  # vpsay の設定からナレーターを調べ、口調ファイルを出力
+└── characters/               # ナレーターごとの口調ファイル
+    ├── _generic.md           # 専用ファイルがないときの汎用口調
+    └── Natsuki Karin.md      # 夏色花梨
 ```
 
 ## トラブルシューティング
@@ -65,14 +87,17 @@ which vpsay
 
 ### 音声が再生されない
 
-1. VOICEPEAKがインストールされているか確認
-2. 音量設定を確認
+1. VOICEPEAKとナレーターがインストールされているか確認
+2. `vpsay --list-presets` でデフォルトプリセットが設定されているか確認
+3. 音量設定を確認
 
 ## ライセンス
 
 [MIT License](LICENSE)
 
+VOICEPEAK の各ナレーターには、それぞれの利用規約があります。生成した音声を公開する場合は、各ナレーターの規約に従ってください。
+
 ## 関連リンク
 
-- [VOICEPEAK](https://www.ah-soft.com/voice/6nare/)
+- [VOICEPEAK](https://www.ah-soft.com/voice/)
 - [voicepeak-cli (vpsay command)](https://github.com/petamorikei/voicepeak-cli)
