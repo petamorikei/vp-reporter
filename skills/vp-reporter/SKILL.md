@@ -1,8 +1,9 @@
 ---
 name: vp-reporter
 description: vpsayコマンド（VOICEPEAK）を使用して作業の進捗と結果を音声で報告する。読み上げナレーターに合わせた口調で話す。ビルド、テスト、デプロイ、ファイル操作などあらゆる開発作業で使用。タスク開始・進捗・完了・エラー時に自動的に音声通知を行う。「音声で報告」「読み上げて」「進捗を通知」等のリクエストに対応。
-allowed-tools: Bash(vpsay --bg *) Bash(${CLAUDE_SKILL_DIR}/scripts/voice-profile.sh)
+allowed-tools: Bash(vpsay --bg *) Bash(bash ${CLAUDE_SKILL_DIR}/scripts/voice-profile.sh)
 argument-hint: "報告メッセージ"
+license: MIT
 ---
 
 # VP Reporter スキル
@@ -14,7 +15,7 @@ argument-hint: "報告メッセージ"
 
 以下はスキルの読み込み時に vpsay の設定（`default_preset`）から自動で取得したものです。報告文はこの口調で作ってください。
 
-!`${CLAUDE_SKILL_DIR}/scripts/voice-profile.sh`
+!`bash ${CLAUDE_SKILL_DIR}/scripts/voice-profile.sh`
 
 ## いつこのスキルを使うか
 

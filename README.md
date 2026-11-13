@@ -25,15 +25,17 @@ vpsay --list-presets   # (default) の付いたプリセットのナレーター
 
 ### Claude Codeへの追加
 
-プラグインとして追加：
+[GitHub CLI](https://cli.github.com/)の`gh skill`でインストールします（`~/.claude/skills/vp-reporter/`に入ります）：
 ```bash
-/plugin add <path-to-vp-reporter>
+gh skill install petamorikei/vp-reporter vp-reporter --agent claude-code --scope user
 ```
 
-または、`~/.claude/skills/`ディレクトリにコピー：
+更新：
 ```bash
-rsync -av --delete --exclude='.git' --exclude='.DS_Store' . ~/.claude/skills/vp-reporter/
+gh skill update --all
 ```
+
+`gh skill`はインストール時にファイルの実行権限を保持しないため、`SKILL.md`はスクリプトを`bash`経由で実行します。
 
 ## 使い方
 
@@ -46,19 +48,19 @@ vpsay --bg "テストが完了したわよ"
 ```
 
 - ナレーターを変えるときは、vpsay の `default_preset` を変更します。スキルは読み込み時に vpsay の設定からナレーターを調べ、そのナレーターの口調ファイルを使います。
-- 報告のガイドラインなど、スキルの詳細な動作仕様は [SKILL.md](SKILL.md) を参照してください。
+- 報告のガイドラインなど、スキルの詳細な動作仕様は [SKILL.md](skills/vp-reporter/SKILL.md) を参照してください。
 
 ## ナレーターと口調
 
-`characters/` に口調ファイルがあるナレーター：
+`skills/vp-reporter/characters/` に口調ファイルがあるナレーター：
 
 - 夏色花梨（`Natsuki Karin`）
 
-それ以外のナレーター（6ナレーターセットなど）は汎用の丁寧な口調（`characters/_generic.md`）で報告します。
+それ以外のナレーター（6ナレーターセットなど）は汎用の丁寧な口調（`skills/vp-reporter/characters/_generic.md`）で報告します。
 
 ### ナレーターを追加する
 
-`characters/<vpsay --list-narrator に表示される名前>.md` を作成します（例: `characters/Natsuki Karin.md`）。
+`skills/vp-reporter/characters/<vpsay --list-narrator に表示される名前>.md` を作成します（例: `skills/vp-reporter/characters/Natsuki Karin.md`）。
 VOICEPEAK のナレーター名は英語表記です。日本語名ではなく、`--list-narrator` の表示どおりのファイル名にしてください。
 既存のファイルと同じく、設定・報告での口調・例を書いてください。
 
@@ -66,14 +68,17 @@ VOICEPEAK のナレーター名は英語表記です。日本語名ではなく�
 
 ```
 vp-reporter/
-├── SKILL.md                  # スキル定義（読み込み時に現在のナレーターの口調を埋め込む）
-├── README.md                 # このファイル
-├── LICENSE                   # MITライセンス
-├── scripts/voice-profile.sh  # vpsay の設定からナレーターを調べ、口調ファイルを出力
-└── characters/               # ナレーターごとの口調ファイル
-    ├── _generic.md           # 専用ファイルがないときの汎用口調
-    └── Natsuki Karin.md      # 夏色花梨
+├── README.md                     # このファイル
+├── LICENSE                       # MITライセンス
+└── skills/vp-reporter/           # gh skillがインストールするスキル本体
+    ├── SKILL.md                  # スキル定義（読み込み時に現在のナレーターの口調を埋め込む）
+    ├── scripts/voice-profile.sh  # vpsayの設定からナレーターを調べ、口調ファイルを出力
+    └── characters/               # ナレーターごとの口調ファイル
+        ├── _generic.md           # 専用ファイルがないときの汎用口調
+        └── Natsuki Karin.md      # 夏色花梨
 ```
+
+`gh skill`がインストールするのは`skills/vp-reporter/`の中身だけです。
 
 ## トラブルシューティング
 
